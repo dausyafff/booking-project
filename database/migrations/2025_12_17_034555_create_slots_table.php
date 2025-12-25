@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('slots', function (Blueprint $table) {
             $table->id();
-            $table->foreign('facility_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('facility_id')->constrained()->cascadeOnDelete();
             $table->time("start_time");
             $table->time("end_time");
             $table->integer("day_of_week")->nullable(); // 0 (Sunday) to 6 (Saturday)
