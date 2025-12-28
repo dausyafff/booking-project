@@ -16,9 +16,7 @@ return new class extends Migration
             $table->foreignId('facility_id')->constrained()->cascadeOnDelete();
             $table->time("start_time");
             $table->time("end_time");
-            $table->integer("day_of_week")->nullable(); // 0 (Sunday) to 6 (Saturday)
-            $table->date("date")->nullable(); // Specific date for one-time slots
-            $table->boolean("is_active")->default(true);
+            $table->integer("max_capacity")->default(1);
             $table->timestamps();
         });
     }

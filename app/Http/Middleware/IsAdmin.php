@@ -15,6 +15,7 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+
         // Menggunakan $request->user() lebih dikenali oleh editor
         if ($request->user() && $request->user()->role === 'admin') {
             return $next($request);
