@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('facility_id')->constrained()->cascadeOnDelete();
             $table->foreignId('slot_id')->nullable()->constrained()->nullOnDelete();
-            // $table->date('date');
+            $table->date('date');
             $table->integer("guest_count")->default(1);
             // $table->time('start_time');
             // $table->time('end_time');

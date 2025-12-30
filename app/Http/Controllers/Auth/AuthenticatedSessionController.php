@@ -38,6 +38,15 @@ class AuthenticatedSessionController extends Controller
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
+    // protected function authenticated(Request $request, $user)
+    // {
+    //     if (session()->has('booking_draft')) {
+    //         return redirect()->route('booking.confirm');
+    //     }
+
+    //     return redirect('/dashboard');
+    // }
+
     /**
      * Destroy an authenticated session.
      */

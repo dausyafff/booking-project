@@ -86,11 +86,12 @@
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Area
                         Restoran</label>
                     <select
-                        class="w-full text-slate-800 font-bold focus:outline-none bg-transparent appearance-none cursor-pointer">
-                        <option>Semua Area</option>
-                        <option>Indoor (AC)</option>
-                        <option>Outdoor (Garden)</option>
-                        <option>Rooftop</option>
+                        class="w-full text-slate-800 font-bold focus:outline-none bg-transparent appearance-none cursor-pointer"
+                        name="location">
+                        <option value="">Semua Area</option>
+                        <option value="Indoor">Indoor (AC)</option>
+                        <option value="Outdoor">Outdoor (Garden)</option>
+                        <option value="Rooftop">Rooftop</option>
                     </select>
                 </div>
                 <div class="hidden md:block w-[1px] h-12 bg-slate-100"></div>
@@ -105,16 +106,19 @@
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Jumlah
                         Orang</label>
                     <select
-                        class="w-full text-slate-800 font-bold focus:outline-none bg-transparent appearance-none cursor-pointer">
-                        <option>2 Orang</option>
-                        <option>4 Orang</option>
-                        <option>6+ Orang (Grup)</option>
+                        class="w-full text-slate-800 font-bold focus:outline-none bg-transparent appearance-none cursor-pointer"
+                        name="guests">
+                        <option value="2">2 Orang</option>
+                        <option value="4">4 Orang</option>
+                        <option value="">6+ Orang (Grup)</option>
                     </select>
                 </div>
-                <button
+                <button id="btnSearch"
                     class="w-full md:w-auto bg-slate-900 hover:bg-black text-white px-10 py-5 rounded-[2rem] font-bold transition-all shadow-xl active:scale-95">
                     Cek Ketersediaan Meja
                 </button>
+                <div id="resultContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                </div>
             </div>
         </div>
     </section>
@@ -244,6 +248,55 @@
         </div>
     </footer>
 
+    <script>
+        document.getElementById('btnSearch').addEventListener('click', function() {
+            // Memberikan feedback loading
+            this.innerText = 'Mencari...';
+            this.disabled = true;
+
+            const location = document.querySelector('select[name="location"]').value;
+            const time = document.querySelector('input[type="time"]').value;
+            const guests = document.querySelector('select[name="guests"]').value;
+
+            fetch(`/api/check-availability?location=${location}&start_time=${time}&guest_count=${guests}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(res => {
+                    const container = document.getElementById('resultContainer');
+                    container.innerHTML = '';
+
+                    if (!res.data || res.data.length === 0) {
+                        container.innerHTML =
+                            '<div class="col-span-full text-center py-10"><p class="text-slate-500 font-medium">Maaf, tidak ada meja yang tersedia untuk kriteria tersebut.</p></div>';
+                    } else {
+                        res.data.forEach(item => {
+                            container.innerHTML += `
+                        <div class="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-xl hover:shadow-2xl transition-all">
+                            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-4 font-bold">
+                                ${item.capacity}
+                            </div>
+                            <h3 class="font-extrabold text-xl text-slate-900">${item.name}</h3>
+                            <p class="text-slate-500 text-sm mt-1">${item.location}</p>
+                            <button onclick="bookingNow(${item.id})" class="mt-6 w-full bg-slate-900 hover:bg-amber-600 text-white py-3 rounded-2xl font-bold transition-all">
+                                Pesan Sekarang
+                            </button>
+                        </div>
+                    `;
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat mengambil data.');
+                })
+                .finally(() => {
+                    this.innerText = 'Cek Ketersediaan Meja';
+                    this.disabled = false;
+                });
+        });
+    </script>
 </body>
 
 </html>
