@@ -137,7 +137,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {{-- <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div
                 class="group bg-white rounded-[2.5rem] p-4 border border-slate-100 hover:shadow-2xl transition-all duration-500">
                 <div class="relative overflow-hidden rounded-[2rem] aspect-[4/3] mb-6">
@@ -151,13 +151,13 @@
 
                 <div class="px-2 pb-2">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="font-extrabold text-xl text-slate-900">Veranda Garden #A1</h3>
+                        <h3 class="font-extrabold text-xl text-slate-900">Indoor</h3>
                         <span class="text-amber-500 font-bold">4 Kursi</span>
                     </div>
 
                     <div class="flex flex-wrap gap-2 mb-6">
                         <span
-                            class="px-2.5 py-1 bg-slate-50 text-slate-500 text-[10px] font-bold rounded-lg border border-slate-100">OUTDOOR</span>
+                            class="px-2.5 py-1 bg-slate-50 text-slate-500 text-[10px] font-bold rounded-lg border border-slate-100">Indoors</span>
                         <span
                             class="px-2.5 py-1 bg-slate-50 text-slate-500 text-[10px] font-bold rounded-lg border border-slate-100">WIFI</span>
                         <span
@@ -191,7 +191,7 @@
 
                 <div class="px-2 pb-2">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="font-extrabold text-xl text-slate-900">Private Suite #V2</h3>
+                        <h3 class="font-extrabold text-xl text-slate-900">Outdoor</h3>
                         <span class="text-amber-500 font-bold">8 Kursi</span>
                     </div>
 
@@ -217,7 +217,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </section>
 
     <footer class="bg-slate-900 text-white py-20 px-6">
