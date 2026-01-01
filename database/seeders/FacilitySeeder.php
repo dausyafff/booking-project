@@ -2,24 +2,35 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Facility;
+use App\Models\Slot; // Import model Slot
 use Illuminate\Support\Str;
 
 class FacilitySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        Facility::create([
-            'name' => 'Ruang Meeting A',
-            'slug' => Str::slug('Ruang Meeting A'),
-            'location' => 'Lantai 2',
-            'capacity' => 10,
-            'price_per_hour' => 100000
+        // 1. Buat Fasilitas dengan lokasi yang sesuai pilihan di HTML (Indoor/Outdoor/Rooftop)
+        $facility = Facility::create([
+            'name' => 'VIP Table Indoor #01',
+            'slug' => Str::slug('VIP Table Indoor 01'),
+            'location' => 'Indoor', // Sesuai dengan value di <option>
+            'capacity' => 4,
+            'description' => 'Meja eksklusif dengan AC dan pemandangan interior.',
+            'price_per_hour' => 50000
         ]);
+
+        // 2. BUAT SLOT (PENTING: Tanpa ini, pencarian akan selalu kosong)
+        // Kita buatkan jam operasional dari jam 08:00 sampai 22:00
+        $startTime = 8;
+        for ($i = 0; $i < 14; $i++) {
+            Slot::create([
+                'facility_id' => $facility->id,
+                'start_time' => sprintf('%02d:00', $startTime + $i),
+                'end_time' => sprintf('%02d:00', $startTime + $i + 1),
+                'max_capacity' => 1, // 1 meja hanya bisa dipesan 1 orang/grup per jam
+            ]);
+        }
     }
 }
