@@ -155,6 +155,7 @@
     </footer>
 
     <script>
+        const isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
         document.addEventListener('DOMContentLoaded', function() {
             const btnSearch = document.getElementById('btnSearch');
             const dateInput = document.getElementById('reservationDate');
@@ -224,37 +225,45 @@
                 maximumSignificantDigits: 3
             }).format(item.price_per_hour || 50000);
             return `
-            <div class="group bg-white rounded-[2.5rem] p-5 border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500">
-                <div class="relative overflow-hidden rounded-[2rem] aspect-video mb-6">
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-bold text-emerald-600 uppercase tracking-widest">
-                        Tersedia ${selectedDate}
+                    <div class="group bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:border-amber-500 transition-all duration-300 relative overflow-hidden">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-14 h-14 bg-slate-900 text-white rounded-2xl flex flex-col items-center justify-center shadow-lg group-hover:bg-amber-500 transition-colors">
+                        <span class="text-[10px] uppercase font-bold opacity-60">No</span>
+                        <span class="text-xl font-black">${item.name.replace('Meja ', '')}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest">${item.location}</span>
+                        <span class="text-emerald-500 text-xs font-bold">● Tersedia</span>
                     </div>
                 </div>
-                <div class="px-2">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="font-extrabold text-xl text-slate-900">${item.name}</h3>
-                            <p class="text-slate-400 text-xs font-bold uppercase">${item.location}</p>
-                        </div>
-                        <span class="bg-amber-50 text-amber-600 px-3 py-1 rounded-lg font-bold text-xs">${item.capacity} Tamu</span>
+
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">${item.name}</h3>
+                        <p class="text-slate-500 text-sm">Kapasitas: ${item.capacity} Orang</p>
                     </div>
-                    <div class="flex items-center justify-between pt-5 border-t border-slate-50">
-                        <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase">Harga Reservasi</p>
-                            <p class="text-lg font-extrabold text-slate-900">${price}</p>
-                        </div>
-                        <button onclick="bookingNow(${item.id})" class="bg-slate-900 hover:bg-amber-500 text-white px-6 py-3 rounded-2xl font-bold transition-all text-sm">
-                            Pilih Meja
-                        </button>
-                    </div>
+
+                    <button onclick="bookingNow(${item.id})" class="w-full py-3 bg-slate-50 group-hover:bg-slate-900 group-hover:text-white text-slate-900 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2">
+                        Pilih Meja Ini
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
                 </div>
             </div>`;
         }
 
         function bookingNow(id) {
-            window.location.href =
-                `/booking/create?facility_id=${id}&date=${document.getElementById('reservationDate').value}`;
+            if (!isLoggedIn) {
+                // Jika belum login, arahkan ke halaman login
+                alert("Silahkan login terlebih dahulu untuk memilih meja spesifik.");
+                window.location.href = "{{ route('login') }}";
+                return;
+            }
+
+            // Jika sudah login, lanjut ke halaman detail booking
+            const selectedDate = document.getElementById('reservationDate').value;
+            window.location.href = `/booking/create?facility_id=${id}&date=${selectedDate}`;
         }
     </script>
 </body>

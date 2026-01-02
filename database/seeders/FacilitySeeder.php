@@ -12,14 +12,15 @@ class FacilitySeeder extends Seeder
     public function run(): void
     {
         // 1. Buat Fasilitas dengan lokasi yang sesuai pilihan di HTML (Indoor/Outdoor/Rooftop)
-        $facility = Facility::create([
-            'name' => 'VIP Table Indoor #01',
-            'slug' => Str::slug('VIP Table Indoor 01'),
-            'location' => 'Indoor', // Sesuai dengan value di <option>
-            'capacity' => 4,
-            'description' => 'Meja eksklusif dengan AC dan pemandangan interior.',
-            'price_per_hour' => 50000
-        ]);
+        for ($i = 1; $i <= 10; $i++) {
+            $facility = Facility::create([
+                'name' => "Meja " . sprintf("%02d", $i), // Meja 01, Meja 02, dst
+                'slug' => "meja-" . $i,
+                'location' => 'Indoor',
+                'capacity' => 2,
+                'price_per_hour' => 50000
+            ]);
+        }
 
         // 2. BUAT SLOT (PENTING: Tanpa ini, pencarian akan selalu kosong)
         // Kita buatkan jam operasional dari jam 08:00 sampai 22:00
