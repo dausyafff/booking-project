@@ -255,7 +255,7 @@
 
         function bookingNow(id) {
             if (!isLoggedIn) {
-                // Jika belum login, arahkan ke halaman login
+                // Jika belum login, arahkan ke halsaman login
                 alert("Silahkan login terlebih dahulu untuk memilih meja spesifik.");
                 window.location.href = "{{ route('login') }}";
                 return;

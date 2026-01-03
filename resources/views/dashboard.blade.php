@@ -7,22 +7,44 @@
                     <h2 class="text-3xl font-bold text-slate-900">Halo, {{ Auth::user()->name }}! 👋</h2>
                     <p class="text-slate-500">Siap untuk pengalaman kuliner terbaik hari ini?</p>
                 </div>
-                <button
+                <a href="{{ url('/') }}"
                     class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-amber-200 transition-all">
                     + Buat Reservasi Baru
-                </button>
+                </a>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
                     <p class="text-slate-500 text-sm font-medium">Reservasi Aktif</p>
-                    <h3 class="text-2xl font-bold text-slate-900 mt-1">2 Meja</h3>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1">{{ $activeReservations->count() }} Meja</h3>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                <div class="lg:col-span-2 space-y-6">
+                @forelse($activeReservations as $booking)
+                    <div
+                        class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm flex justify-between items-center">
+                        <div>
+                            <span
+                                class="px-3 py-1 {{ $booking->status == 'pending' ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600' }} rounded-full text-[10px] font-bold uppercase mb-2 inline-block">
+                                {{ $booking->status }}
+                            </span>
+                            <h4 class="font-bold text-slate-900 text-lg">{{ $booking->facility->name }}</h4>
+                            <p class="text-slate-400 text-xs">
+                                {{ \Carbon\Carbon::parse($booking->reservation_date)->format('d M Y') }} •
+                                {{ $booking->start_time }}</p>
+                        </div>
+                        <a href="{{ route('booking.show', $booking->id) }}"
+                            class="text-slate-400 hover:text-slate-900 font-bold text-sm">Detail →</a>
+                    @empty
+                        <div
+                            class="col-span-full py-10 text-center bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+                            <p class="text-slate-500 font-medium">Belum ada reservasi aktif.</p>
+                            <a href="/" class="text-amber-500 font-bold text-sm underline">Cari Meja Sekarang</a>
+                        </div>
+                @endforelse
+                {{-- <div class="lg:col-span-2 space-y-6">
                     <h3 class="text-xl font-bold text-slate-900">Slot Meja Tersedia</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div
@@ -49,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="space-y-6">
                     <h3 class="text-xl font-bold text-slate-900">Riwayat Pesanan</h3>
