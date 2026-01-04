@@ -19,10 +19,10 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'facility_id' => 'required',
+            'facility_id' => 'required|exists:facilities,id',
             'reservation_date' => 'required|date',
-            'start_time' => 'required',
-            'guest_count' => 'required|integer',
+            'start_time' => 'required|format:H:i',
+            'guest_count' => 'required|integer|min:1',
         ]);
 
         $booking = Booking::create([

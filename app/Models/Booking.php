@@ -28,8 +28,8 @@ class Booking extends Model
         return $this->belongsTo(Facility::class);
     }
 
-    public function slot()
-    {
-        return $this->belongsTo(Slot::class);
-    }
+    // public function slot()
+    // {
+    //     return $this->belongsTo(Slot::class);
+    // }
 }

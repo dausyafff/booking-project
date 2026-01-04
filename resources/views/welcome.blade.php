@@ -52,7 +52,8 @@
             <div class="flex items-center gap-3">
                 @auth
                     <a href="{{ url('/dashboard') }}"
-                        class="bg-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-black transition-all shadow-lg">Dashboard</a>
+                        class="bg-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-black transition-all shadow-lg">Hai,
+                        {{ Auth::user()->name }}</a>
                 @else
                     <a href="{{ route('login') }}"
                         class="text-sm font-bold text-slate-700 hover:text-amber-600 px-4">Login</a>
