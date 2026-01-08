@@ -21,7 +21,7 @@ return new class extends Migration
             $table->time('start_time');
             $table->time('end_time');
             $table->string('status')->default('pending');
-            $table->text('note')->nullable();
+            // $table->text('note')->nullable();
             $table->decimal('total_price', 10, 2)->nullable();
             $table->timestamps();
         });

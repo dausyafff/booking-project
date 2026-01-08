@@ -11,6 +11,16 @@
         </div>
 
         <div class="md:w-2/3 p-12">
+            @if ($errors->any())
+                <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-r-xl shadow-sm">
+                    <p class="font-bold text-sm mb-1">Ada masalah pada inputan Anda:</p>
+                    <ul class="list-disc list-inside text-xs">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form action="{{ route('booking.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="facility_id" value="{{ $facility->id }}">

@@ -18,25 +18,34 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'facility_id' => 'required|exists:facilities,id',
+            'facility_id'      => 'required|exists:facilities,id',
             'reservation_date' => 'required|date',
-            'start_time' => 'required|format:H:i',
-            'guest_count' => 'required|integer|min:1',
+            'start_time'       => 'required|date_format:H:i',
+            'guest_count'      => 'required|integer|min:1',
+            'total_price'      => 'required',
         ]);
 
-        $booking = Booking::create([
-            'user_id' => auth()->id(),
-            'facility_id' => $request->facility_id,
-            'reservation_date' => $request->reservation_date,
-            'start_time' => $request->start_time,
-            'end_time' => \Carbon\Carbon::parse($request->start_time)->addHours(2), // Durasi default 2 jam
-            'guest_count' => $request->guest_count,
-            'status' => 'pending',
-            'total_price' => $request->total_price,
-        ]);
+        try {
+            $booking = Booking::create([
+                'user_id'          => auth()->id(),
+                'facility_id'      => $request->facility_id,
+                'reservation_date' => $request->reservation_date,
+                'start_time'       => $request->start_time,
+                'end_time'         => \Carbon\Carbon::parse($request->start_time)->addHours(2)->format('H:i'),
+                'guest_count'      => $request->guest_count,
+                'status'           => 'pending',
+                'total_price'      => $request->total_price,
+            ]);
 
-        return redirect()->route('booking.checkout', $booking->id)->with('success', 'Reservasi berhasil dibuat!');
+            // Pastikan redirect ini mengarah ke route yang benar
+            return redirect()->route('booking.checkout', ['id' => $booking->id])
+                ->with('success', 'Reservasi berhasil dibuat!');
+        } catch (\Exception $e) {
+            // Jika error, kembali ke form dan tampilkan pesan errornya
+            return back()->withErrors(['msg' => 'Gagal menyimpan ke database: ' . $e->getMessage()]);
+        }
     }
 
     public function checkout($id)
@@ -51,10 +60,25 @@ class BookingController extends Controller
         return view('booking.checkout', compact('booking'));
     }
 
+    // public function create(Request $request)
+    // {
+    //     $facility = Facility::findOrFail($request->facility_id);
+    //     $selectedDate = $request->date;
+
+    //     return view('booking.create', compact('facility', 'selectedDate'));
+    // }
+
     public function create(Request $request)
     {
-        $facility = Facility::findOrFail($request->facility_id);
-        $selectedDate = $request->date;
+        // Mengambil ID dari request, atau dari session jika redirect balik karena error validasi
+        $facilityId = $request->facility_id ?? old('facility_id');
+        $selectedDate = $request->date ?? old('reservation_date');
+
+        if (!$facilityId) {
+            return redirect('/')->with('error', 'Silahkan pilih meja terlebih dahulu.');
+        }
+
+        $facility = Facility::findOrFail($facilityId);
 
         return view('booking.create', compact('facility', 'selectedDate'));
     }
