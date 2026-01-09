@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Facility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class BookingController extends Controller
 {
@@ -81,5 +82,17 @@ class BookingController extends Controller
         $facility = Facility::findOrFail($facilityId);
 
         return view('booking.create', compact('facility', 'selectedDate'));
+    }
+
+    public function show($id)
+    {
+        $booking = Booking::with('facility')->findOrFail($id);
+
+        // Pastikan user hanya bisa melihat booking miliknya sendiri
+        if ($booking->user_id !== auth()->id()) {
+            abort(403, "akses ditolak.");
+        }
+
+        return view('booking.show', compact('booking'));
     }
 }

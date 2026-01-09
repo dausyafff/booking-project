@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
     // route payment ,coming soon
     Route::get("/booking/checkout/{id}", [BookingController::class, "checkout"])->name("booking.checkout");
 
+    Route::get("/booking/{id}", [BookingController::class, "show"])->name("booking.show");
+
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

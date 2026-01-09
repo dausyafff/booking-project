@@ -1,37 +1,58 @@
-<div class="max-w-2xl mx-auto py-20 px-6">
-    <div class="bg-white rounded-[3rem] shadow-xl p-10 border border-slate-100 text-center">
-        <div
-            class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
+<x-app-layout>
+    <div class="py-20 bg-slate-50 min-h-screen flex items-center">
+        <div class="max-w-2xl mx-auto px-6 w-full">
+            <div
+                class="bg-white rounded-[3.5rem] shadow-2xl overflow-hidden border border-slate-100 text-center p-12 relative">
+                <div
+                    class="inline-flex items-center px-4 py-2 bg-amber-50 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-widest mb-8">
+                    <span class="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-ping"></span>
+                    Menunggu Pembayaran
+                </div>
+
+                <h2 class="text-4xl font-black text-slate-900 mb-2 tracking-tight">Hampir Selesai!</h2>
+                <p class="text-slate-400 font-medium text-sm mb-10">Silahkan selesaikan pembayaran untuk mengamankan meja
+                    Anda.</p>
+
+                <div class="bg-slate-50 rounded-[2.5rem] p-10 mb-10 border border-slate-100 text-left">
+                    <div class="flex justify-between items-end mb-8">
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Meja Anda</p>
+                            <p class="text-2xl font-black text-slate-900">{{ $booking->facility->name }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 text-amber-500">
+                                Total Tagihan</p>
+                            <p class="text-3xl font-black text-slate-900">Rp
+                                {{ number_format($booking->total_price, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 pt-8 border-t border-slate-200">
+                        <p class="text-[11px] font-black text-slate-500 uppercase tracking-widest">Metode Transfer (BCA)
+                        </p>
+                        <div
+                            class="flex items-center justify-between bg-white p-6 rounded-3xl border border-slate-200 group hover:border-amber-500 transition-all">
+                            <div>
+                                <p class="text-2xl font-black text-slate-900 tracking-tighter">8829 001 293</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Gusto
+                                    Restaurant Group</p>
+                            </div>
+                            <button
+                                class="bg-slate-100 group-hover:bg-amber-500 group-hover:text-white p-3 rounded-xl transition-all">
+                                📋
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <a href="{{ route('dashboard') }}"
+                        class="block w-full bg-slate-900 hover:bg-black text-white py-5 rounded-2xl font-black shadow-xl transition-all uppercase tracking-widest">
+                        Cek Status di Dashboard
+                    </a>
+                </div>
+            </div>
         </div>
-
-        <h2 class="text-3xl font-black text-slate-900 mb-2">Hampir Selesai!</h2>
-        <p class="text-slate-500 mb-8">Silahkan selesaikan pembayaran untuk mengonfirmasi meja Anda.</p>
-
-        <div class="bg-slate-50 rounded-2xl p-6 mb-8 text-left">
-            <div class="flex justify-between mb-2">
-                <span class="text-slate-400">Meja:</span>
-                <span class="font-bold text-slate-900">{{ $booking->facility->name }}</span>
-            </div>
-            <div class="flex justify-between mb-4 pb-4 border-b">
-                <span class="text-slate-400">Total Biaya:</span>
-                <span class="font-bold text-amber-600 text-xl">Rp
-                    {{ number_format($booking->total_price, 0, ',', '.') }}</span>
-            </div>
-
-            <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Transfer Ke Rekening:</p>
-            <div class="bg-white p-4 rounded-xl border border-slate-200">
-                <p class="font-black text-lg text-slate-900">BCA 123-456-7890</p>
-                <p class="text-xs text-slate-500">a/n Gusto Restaurant Premium</p>
-            </div>
-        </div>
-
-        <a href="{{ route('dashboard') }}"
-            class="block w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-black transition-all">
-            Cek Status di Dashboard
-        </a>
     </div>
-</div>
+</x-app-layout>
