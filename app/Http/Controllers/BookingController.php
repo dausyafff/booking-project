@@ -76,7 +76,7 @@ class BookingController extends Controller
         $selectedDate = $request->date ?? old('reservation_date');
 
         if (!$facilityId) {
-            return redirect('/')->with('error', 'Silahkan pilih meja terlebih dahulu.');
+            return redirect()->route("dashboard")->with('error', 'Silahkan pilih meja terlebih dahulu.');
         }
 
         $facility = Facility::findOrFail($facilityId);
