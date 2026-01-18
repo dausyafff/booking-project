@@ -1,16 +1,15 @@
 <?php
 
 use App\Models\Booking;
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
-
+// Hapus yang 'payment_deadline' jika kolomnya memang tidak ada di database
 Schedule::call(function () {
-    Booking::where('status', 'pending')
-        ->where('payment_deadline', '<', now())
+    $count = Booking::where('status', 'pending')
+        ->where('created_at', '<', now()->subHour())
         ->update(['status' => 'cancelled']);
+
+    if ($count > 0) {
+        logger("Auto-cancel: Berhasil membatalkan $count reservasi.");
+    }
 })->everyMinute();
