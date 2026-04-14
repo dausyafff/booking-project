@@ -25,5 +25,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: booking_project
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
     ports:
       - "3307:3306"
