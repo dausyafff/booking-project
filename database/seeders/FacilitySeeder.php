@@ -11,27 +11,37 @@ class FacilitySeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Buat Fasilitas dengan lokasi yang sesuai pilihan di HTML (Indoor/Outdoor/Rooftop)
+        $locations = [
+            'Indoor',
+            'Indoor',
+            'Indoor',
+            'Indoor',
+            'Outdoor',
+            'Outdoor',
+            'Outdoor',
+            'Rooftop',
+            'Rooftop',
+            'Rooftop'
+        ];
+
         for ($i = 1; $i <= 10; $i++) {
             $facility = Facility::create([
-                'name' => "Meja " . sprintf("%02d", $i), // Meja 01, Meja 02, dst
-                'slug' => "meja-" . $i,
-                'location' => 'Indoor',
-                'capacity' => 2,
-                'price_per_hour' => 50000
+                'name'          => "Meja " . sprintf("%02d", $i),
+                'slug'          => "meja-" . $i,
+                'location'      => $locations[$i - 1],
+                'capacity'      => ($i <= 4) ? 2 : (($i <= 7) ? 4 : 6),
+                'price_per_hour' => 50000,
             ]);
-        }
 
-        // 2. BUAT SLOT (PENTING: Tanpa ini, pencarian akan selalu kosong)
-        // Kita buatkan jam operasional dari jam 08:00 sampai 22:00
-        $startTime = 8;
-        for ($i = 0; $i < 14; $i++) {
-            Slot::create([
-                'facility_id' => $facility->id,
-                'start_time' => sprintf('%02d:00', $startTime + $i),
-                'end_time' => sprintf('%02d:00', $startTime + $i + 1),
-                'max_capacity' => 1, // 1 meja hanya bisa dipesan 1 orang/grup per jam
-            ]);
+            // ✅ Slot dibuat untuk SETIAP meja
+            for ($j = 0; $j < 14; $j++) {
+                Slot::create([
+                    'facility_id'  => $facility->id,
+                    'start_time'   => sprintf('%02d:00', 8 + $j),
+                    'end_time'     => sprintf('%02d:00', 8 + $j + 1),
+                    'max_capacity' => 1,
+                ]);
+            }
         }
     }
 }

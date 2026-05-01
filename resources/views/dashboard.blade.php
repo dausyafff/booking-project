@@ -4,7 +4,7 @@
 
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl font-bold text-slate-900">Halo, {{ Auth::user()->name }}! 👋</h2>
+                    <h2 class="text-3xl font-bold text-slate-900">Halo, {{ Str::title(Auth::user()->name) }} 👋</h2>
                     <p class="text-slate-500">Siap untuk pengalaman kuliner terbaik hari ini?</p>
                 </div>
                 <a href="{{ url('/') }}"
